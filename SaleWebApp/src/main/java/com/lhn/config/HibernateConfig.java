@@ -1,14 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.lhn.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
-import static org.hibernate.cfg.AvailableSettings.DIALECT;
-import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
+import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,44 +23,45 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 @Configuration
 @PropertySource("classpath:database.properties")
 public class HibernateConfig {
-
     @Autowired
     private Environment env;
-
+    
     @Bean
-    public LocalSessionFactoryBean getSessionFactoryBean() {
-        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setPackagesToScan(new String[]{
-            "com.lhn.pojo"
-        });
-        sessionFactoryBean.setDataSource(dataSource());
-        sessionFactoryBean.setHibernateProperties(hibernateProperties());
-        return sessionFactoryBean;
-    }
-
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    public LocalSessionFactoryBean getSessionFactory(){
+        LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
+        factory.setPackagesToScan("com.lhn.pojo");
+        factory.setDataSource(dataSource());
+        factory.setHibernateProperties(hibernateProperties());
         
-        dataSource.setDriverClassName(env.getProperty("hibernate.connection.driverClass"));
-        dataSource.setUrl(env.getProperty("hibernate.connection.url"));
-        dataSource.setUsername(env.getProperty("hibernate.connection.username"));
-        dataSource.setPassword(env.getProperty("hibernate.connection.password"));
-       
-        return dataSource;
+        return factory;
     }
-
-    private Properties hibernateProperties() {
+    
+    @Bean
+    public DataSource dataSource(){
+        DriverManagerDataSource d = new DriverManagerDataSource();
+        d.setDriverClassName(env.getProperty("hibernate.connection.driverClass"));
+        d.setUrl(env.getProperty("hibernate.connection.url"));
+        d.setUsername(env.getProperty("hibernate.connection.username"));
+        d.setPassword(env.getProperty("hibernate.connection.password"));
+        
+        return d;
+    }
+    
+    @Bean
+    public Properties hibernateProperties(){
         Properties props = new Properties();
-        props.put(DIALECT, env.getProperty("hibernate.dialect"));
-        props.put(SHOW_SQL, env.getProperty("hibernate.showSql"));
+        props.setProperty(AvailableSettings.DIALECT, env.getProperty("hibernate.dialect"));
+        props.setProperty(AvailableSettings.SHOW_SQL, env.getProperty("hibernate.showSql"));
+        
         return props;
     }
     
     @Bean
-    public HibernateTransactionManager transactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(getSessionFactoryBean().getObject());
-        return transactionManager;
+    public HibernateTransactionManager transactionManager(){
+        HibernateTransactionManager m = new HibernateTransactionManager();
+        m.setSessionFactory(getSessionFactory().getObject());
+        
+        return m;
+        
     }
 }

@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.lhn.config;
 
@@ -21,19 +20,23 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.lhn.controller")
 @EnableTransactionManagement
-public class WebApplicationContextConfig implements WebMvcConfigurer{
+@ComponentScan(basePackages = {
+    "com.lhn.controller",
+    "com.lhn.repository",
+    "com.lhn.service"
+})
+public class WebAppContextConfig implements WebMvcConfigurer{
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer){
-        configurer.enable();
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configure){
+        configure.enable();
     }
     
     @Bean
     public InternalResourceViewResolver getInternalResourceViewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setViewClass(JstlView.class);
-        resolver.setPrefix("/WEB-INF/pages/");
+        resolver.setPrefix("/WEB-INF/Pages/");
         resolver.setSuffix(".jsp");
         
         return resolver;
