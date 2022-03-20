@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <section>
     <div class="jumbotron">
         <h1>Apache Tiles</h1>

@@ -25,7 +25,6 @@ public class HomeController {
     
     @RequestMapping("/")
     public String index(Model model){
-        model.addAttribute("message", "Nam");
         model.addAttribute("categories", this.categoryService.getCategories());
         
         return "index";
