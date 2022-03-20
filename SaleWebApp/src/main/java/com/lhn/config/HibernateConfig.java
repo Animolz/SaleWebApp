@@ -62,6 +62,5 @@ public class HibernateConfig {
         m.setSessionFactory(getSessionFactory().getObject());
         
         return m;
-        
     }
 }

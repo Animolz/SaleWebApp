@@ -23,14 +23,10 @@ public class HomeController {
     @Autowired
     private CategoryService categoryService;
     
-    @Autowired
-    private ProductService productService;
-    
     @RequestMapping("/")
     public String index(Model model){
         model.addAttribute("message", "Nam");
         model.addAttribute("categories", this.categoryService.getCategories());
-        model.addAttribute("products", this.productService.getProducts(null, 2));
         
         return "index";
     }
